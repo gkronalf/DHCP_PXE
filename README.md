@@ -30,7 +30,8 @@ DHCP (Dynamic Host Configuration Protocol) — протокол динамиче
 ### Описание работ
   
 В рамках подготвки проекта был подготовлен Vagrantfile для автоматизированного конфигурирования стенда, с учетом выполение подготовки pxeserver с использованием ansible. Для чего в Vagrantfile, в рамках описания конфигурации pxeserver, был добавлен блок:
-```server.vm.provision "ansible" do |ansible|  
+``` server.vm.provision "ansible" do |ansible|  
       ansible.playbook = "ansible/playbook.yml"  
-   end ```
+   end  
+```
 
