@@ -46,21 +46,21 @@
 
 #Скачивание образа CentOS-8.4.2105-x86_64-dvd1.iso
 #Скачиваться будет долго, размер файла больше 9 ГБ. 
-  # - name: Download ISO image CentOS 8.4.2105
-  #   get_url:
-  #     # url: https://mirror.sale-dedic.com/centos/8.4.2105/isos/x86_64/CentOS-8.4.2105-x86_64-dvd1.iso
-  #     # url: https://mirror.nsc.liu.se/centos-store/8.4.2105/isos/x86_64/CentOS-8.4.2105-x86_64-dvd1.iso
-  #     url: https://mirror.yandex.ru/centos/8-stream/isos/x86_64/CentOS-Stream-8-20240318.0-x86_64-dvd1.iso
-  #     dest: ~/CentOS-8.4.2105-x86_64-dvd1.iso
-  #     mode: '0755'
-
   - name: Download ISO image CentOS 8.4.2105
-    copy:
-      src: templates/iso/CentOS-Stream-8-20240318.0-x86_64-dvd1.iso
+    get_url:
+      # url: https://mirror.sale-dedic.com/centos/8.4.2105/isos/x86_64/CentOS-8.4.2105-x86_64-dvd1.iso
+      # url: https://mirror.nsc.liu.se/centos-store/8.4.2105/isos/x86_64/CentOS-8.4.2105-x86_64-dvd1.iso
+      url: https://mirror.yandex.ru/centos/8-stream/isos/x86_64/CentOS-Stream-8-20240318.0-x86_64-dvd1.iso
       dest: ~/CentOS-8.4.2105-x86_64-dvd1.iso
-      owner: root
-      group: root
       mode: '0755'
+#Блок для локального размещения образа для закгузки
+  # - name: Download ISO image CentOS 8.4.2105
+  #   copy:
+  #     src: templates/iso/CentOS-Stream-8-20240318.0-x86_64-dvd1.iso
+  #     dest: ~/CentOS-8.4.2105-x86_64-dvd1.iso
+  #     owner: root
+  #     group: root
+  #     mode: '0755'
 
 #Создание каталога /iso и назначение прав 755  
   - name: Create ISO directory
