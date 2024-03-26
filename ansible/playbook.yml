@@ -12,7 +12,7 @@
   
   tasks:
   #sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*
-  - name: set up repo
+  - name: set mirrorlist up repo
     replace:
       path: "{{ item }}"
       regexp: 'mirrorlist'
@@ -22,7 +22,7 @@
       - /etc/yum.repos.d/CentOS-Linux-BaseOS.repo
 
 #sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*
-  - name: set up repo
+  - name: set baseurl up repo
     replace:
       path: "{{ item }}"
       regexp: '#baseurl=http://mirror.centos.org'
@@ -46,11 +46,20 @@
 
 #Скачивание образа CentOS-8.4.2105-x86_64-dvd1.iso
 #Скачиваться будет долго, размер файла больше 9 ГБ. 
+  # - name: Download ISO image CentOS 8.4.2105
+  #   get_url:
+  #     # url: https://mirror.sale-dedic.com/centos/8.4.2105/isos/x86_64/CentOS-8.4.2105-x86_64-dvd1.iso
+  #     # url: https://mirror.nsc.liu.se/centos-store/8.4.2105/isos/x86_64/CentOS-8.4.2105-x86_64-dvd1.iso
+  #     url: https://mirror.yandex.ru/centos/8-stream/isos/x86_64/CentOS-Stream-8-20240318.0-x86_64-dvd1.iso
+  #     dest: ~/CentOS-8.4.2105-x86_64-dvd1.iso
+  #     mode: '0755'
+
   - name: Download ISO image CentOS 8.4.2105
-    get_url:
-      # url: https://mirror.sale-dedic.com/centos/8.4.2105/isos/x86_64/CentOS-8.4.2105-x86_64-dvd1.iso
-      url: https://mirror.nsc.liu.se/centos-store/8.4.2105/isos/x86_64/CentOS-8.4.2105-x86_64-dvd1.iso
+    copy:
+      src: templates/iso/CentOS-Stream-8-20240318.0-x86_64-dvd1.iso
       dest: ~/CentOS-8.4.2105-x86_64-dvd1.iso
+      owner: root
+      group: root
       mode: '0755'
 
 #Создание каталога /iso и назначение прав 755  
@@ -76,6 +85,14 @@
       dest: /iso
       remote_src: yes 
       directory_mode: yes
+#Отправка kickstart-файла с помощью Ansible
+  - name: copy ks.cfg
+    template:
+      src: ks.cfg
+      dest: /iso/ks.cfg 
+      owner: root
+      group: root
+      mode: 0755
 
 #Копируем конфгурационный файл pxeboot.conf (Файл должен быть предварительно создан в каталаге templates)
   - name: set up httpd config
@@ -111,7 +128,7 @@
 
 #Извлекаем файлы из RPM-пакета
   - name: extract packages syslinux
-    shell: rpm2cpio /iso/BaseOS/Packages/syslinux-tftpboot-6.04-5.el8.noarch.rpm | cpio -dimv
+    shell: rpm2cpio /iso/BaseOS/Packages/syslinux-tftpboot-6.04-6.el8.noarch.rpm | cpio -dimv
   
 #Копируем файлы в каталог /var/lib/tftpboot/
   - name: copy files to TFTP share
